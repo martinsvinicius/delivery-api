@@ -1,8 +1,9 @@
-package tech.blobteam.algafood.infra;
+package tech.blobteam.algafood.repository.kitchen;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tech.blobteam.algafood.model.Kitchen;
-import tech.blobteam.algafood.repository.KitchenRepository;
+import tech.blobteam.algafood.repository.kitchen.KitchenRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,6 +11,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 /** @author vinicius */
+@Component
 public class KitchenRepositoryImpl implements KitchenRepository {
   @PersistenceContext private EntityManager manager;
 

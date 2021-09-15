@@ -1,8 +1,8 @@
-package tech.blobteam.algafood.infra;
+package tech.blobteam.algafood.repository.restaurant;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tech.blobteam.algafood.model.Restaurant;
-import tech.blobteam.algafood.repository.RestaurantRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 /** @author vinicius */
+@Component
 public class RestaurantRepositoryImpl implements RestaurantRepository {
 
   @PersistenceContext EntityManager manager;
@@ -38,7 +39,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
     Restaurant restaurantExists = findById(restaurant.getId());
 
     if (restaurantExists != null) {
-      manager.remove(restaurant);
+      manager.remove(restaurantExists);
     }
   }
 }

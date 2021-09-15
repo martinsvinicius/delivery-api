@@ -1,4 +1,4 @@
-package tech.blobteam.algafood.repository;
+package tech.blobteam.algafood.repository.restaurant;
 
 import tech.blobteam.algafood.model.Restaurant;
 

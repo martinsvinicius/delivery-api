@@ -1,5 +1,6 @@
-package tech.blobteam.algafood.repository;
+package tech.blobteam.algafood.repository.kitchen;
 
+import org.springframework.stereotype.Component;
 import tech.blobteam.algafood.model.Kitchen;
 
 import java.util.List;
