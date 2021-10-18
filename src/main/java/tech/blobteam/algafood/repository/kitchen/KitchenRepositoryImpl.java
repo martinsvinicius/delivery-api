@@ -3,7 +3,6 @@ package tech.blobteam.algafood.repository.kitchen;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tech.blobteam.algafood.model.Kitchen;
-import tech.blobteam.algafood.repository.kitchen.KitchenRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
