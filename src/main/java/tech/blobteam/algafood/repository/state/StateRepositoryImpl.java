@@ -1,6 +1,7 @@
 package tech.blobteam.algafood.repository.state;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import tech.blobteam.algafood.model.State;
 
 import javax.persistence.EntityManager;
@@ -26,11 +27,13 @@ public class StateRepositoryImpl implements StateRepository {
   }
 
   @Override
+  @Transactional
   public State save(State state) {
     return manager.merge(state);
   }
 
   @Override
+  @Transactional
   public void remove(State state) {
     State stateExists = findById(state.getId());
 
