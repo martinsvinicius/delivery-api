@@ -1,5 +1,6 @@
 package tech.blobteam.algafood.repository.kitchen;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tech.blobteam.algafood.model.Kitchen;
@@ -34,11 +35,11 @@ public class KitchenRepositoryImpl implements KitchenRepository {
 
   @Override
   @Transactional
-  public void remove(Kitchen kitchen) {
-    Kitchen kitchenExists = findById(kitchen.getId());
+  public void remove(Long id) {
+    Kitchen kitchenExists = findById(id);
 
-    if (kitchenExists != null) {
-      manager.remove(kitchenExists);
-    }
+    if (kitchenExists == null) throw new EmptyResultDataAccessException(1);
+
+    manager.remove(kitchenExists);
   }
 }
