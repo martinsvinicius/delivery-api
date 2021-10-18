@@ -1,5 +1,6 @@
 package tech.blobteam.algafood.repository.restaurant;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tech.blobteam.algafood.model.Restaurant;
@@ -17,7 +18,8 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 
   @Override
   public List<Restaurant> listAll() {
-    TypedQuery<Restaurant> query = manager.createQuery("select r from Restaurant r", Restaurant.class);
+    TypedQuery<Restaurant> query =
+        manager.createQuery("select r from Restaurant r", Restaurant.class);
 
     return query.getResultList();
   }
@@ -35,11 +37,11 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 
   @Override
   @Transactional
-  public void remove(Restaurant restaurant) {
-    Restaurant restaurantExists = findById(restaurant.getId());
+  public void remove(Long id) {
+    Restaurant restaurantExists = findById(id);
 
-    if (restaurantExists != null) {
-      manager.remove(restaurantExists);
-    }
+    if (restaurantExists == null) throw new EmptyResultDataAccessException(1);
+
+    manager.remove(restaurantExists);
   }
 }
