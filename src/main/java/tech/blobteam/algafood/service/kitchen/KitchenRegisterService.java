@@ -25,7 +25,7 @@ public class KitchenRegisterService {
     try {
       repository.remove(id);
     } catch (DataIntegrityViolationException e) {
-      throw new EntityInUseException("Kitchen cannot be removed, because it's currently in use");
+      throw new EntityInUseException("Kitchen cannot be removed because it's currently in use");
     } catch (EmptyResultDataAccessException e) {
       throw new EntityNotFoundException("Kitchen not found");
     }
