@@ -36,10 +36,29 @@ public class RestaurantController {
   }
 
   @PostMapping
-  public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant) {
-    final Restaurant savedRestaurant = restaurantRegister.save(restaurant);
+  public ResponseEntity<?> create(@RequestBody Restaurant restaurant) {
+    try {
+      final Restaurant savedRestaurant = restaurantRegister.save(restaurant);
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(savedRestaurant);
+      return ResponseEntity.status(HttpStatus.CREATED).body(savedRestaurant);
+    } catch (EntityNotFoundException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+  }
+
+  @PutMapping("{id}")
+  public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Restaurant restaurant) {
+    final Restaurant restaurantExists = repository.findById(id);
+
+    if (restaurantExists == null) return ResponseEntity.notFound().build();
+
+    try {
+      restaurant.setId(restaurantExists.getId());
+      Restaurant savedRestaurant = restaurantRegister.save(restaurant);
+      return ResponseEntity.ok(savedRestaurant);
+    } catch (EntityNotFoundException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
   }
 
   @DeleteMapping("{id}")
