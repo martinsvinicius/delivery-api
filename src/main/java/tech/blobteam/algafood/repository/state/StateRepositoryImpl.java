@@ -1,5 +1,6 @@
 package tech.blobteam.algafood.repository.state;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tech.blobteam.algafood.model.State;
@@ -34,11 +35,11 @@ public class StateRepositoryImpl implements StateRepository {
 
   @Override
   @Transactional
-  public void remove(State state) {
-    State stateExists = findById(state.getId());
+  public void remove(Long id) {
+    State stateExists = findById(id);
 
-    if (stateExists != null) {
-      manager.remove(stateExists);
-    }
+    if (stateExists == null) throw new EmptyResultDataAccessException(1);
+
+    manager.remove(stateExists);
   }
 }

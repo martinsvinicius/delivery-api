@@ -4,9 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tech.blobteam.algafood.exception.EntityInUseException;
 import tech.blobteam.algafood.model.State;
 import tech.blobteam.algafood.repository.state.StateRepository;
+import tech.blobteam.algafood.service.state.StateRegisterService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 /** @author vinicius-victor */
@@ -16,6 +19,7 @@ import java.util.List;
 public class StateController {
 
   private final StateRepository repository;
+  private final StateRegisterService registerService;
 
   @GetMapping
   public ResponseEntity<List<State>> list() {
@@ -33,7 +37,7 @@ public class StateController {
 
   @PostMapping
   public ResponseEntity<State> create(@RequestBody State state) {
-    State savedState = repository.save(state);
+    State savedState = registerService.save(state);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(savedState);
   }
@@ -44,21 +48,26 @@ public class StateController {
 
     if (currentState == null) return ResponseEntity.notFound().build();
 
-    currentState.setName(state.getName());
+    state.setId(currentState.getId());
 
-    final State savedState = repository.save(currentState);
+    final State savedState = registerService.save(state);
 
     return ResponseEntity.ok(savedState);
   }
 
   @DeleteMapping("{id}")
-  public ResponseEntity<State> delete(@PathVariable Long id) {
+  public ResponseEntity<?> delete(@PathVariable Long id) {
     State stateExists = repository.findById(id);
 
     if (stateExists == null) return ResponseEntity.notFound().build();
 
-    repository.remove(stateExists);
-
-    return ResponseEntity.noContent().build();
+    try {
+      registerService.delete(id);
+      return ResponseEntity.noContent().build();
+    } catch (EntityNotFoundException e) {
+      return ResponseEntity.notFound().build();
+    } catch (EntityInUseException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
   }
 }
